@@ -1,0 +1,92 @@
+{
+  "forecast_horizon_hours": 24,
+  "average_effect_mw": {
+    "demand at this hour last week": 71.66100311279297,
+    "demand at this hour yesterday": 32.4379997253418,
+    "demand at this hour two weeks ago": 29.423999786376953,
+    "the day of the week": 23.270000457763672,
+    "the temperature": 21.599000930786133,
+    "the time of day": 16.97599983215332,
+    "it being a public holiday": 14.871000289916992,
+    "the cloud and rain water in the air": 9.979000091552734,
+    "average demand over the previous week": 8.211000442504883,
+    "the humidity": 7.151000022888184,
+    "demand at this hour two days ago": 4.2220001220703125,
+    "the time of year": 4.171000003814697,
+    "the wind speed": 3.2899999618530273,
+    "average demand over the previous day": 2.568000078201294,
+    "it being a weekend": 2.2160000801086426,
+    "schools being in session": 1.7580000162124634
+  },
+  "examples": {
+    "highest forecast": {
+      "timestamp": "2020-03-05T14:00:00",
+      "forecast_mw": 1638.1,
+      "actual_mw": 1610.3,
+      "headline": "The forecast for Thursday 5 March at 2pm is 1,638 MW, which is 453 MW above the average level the model has learned from the data.",
+      "drivers": [
+        {
+          "driver": "demand at this hour last week",
+          "effect_mw": 125.6,
+          "sentence": "Demand at this hour last week pushed it up by 126 MW."
+        },
+        {
+          "driver": "demand at this hour two weeks ago",
+          "effect_mw": 81.6,
+          "sentence": "Demand at this hour two weeks ago pushed it up by 82 MW."
+        },
+        {
+          "driver": "demand at this hour yesterday",
+          "effect_mw": 81.1,
+          "sentence": "Demand at this hour yesterday pushed it up by 81 MW."
+        }
+      ]
+    },
+    "lowest forecast": {
+      "timestamp": "2020-05-31T06:00:00",
+      "forecast_mw": 836.9,
+      "actual_mw": 837.6,
+      "headline": "The forecast for Sunday 31 May at 6am is 837 MW, which is 348 MW below the average level the model has learned from the data.",
+      "drivers": [
+        {
+          "driver": "demand at this hour last week",
+          "effect_mw": -138.5,
+          "sentence": "Demand at this hour last week pulled it down by 138 MW."
+        },
+        {
+          "driver": "demand at this hour yesterday",
+          "effect_mw": -64.4,
+          "sentence": "Demand at this hour yesterday pulled it down by 64 MW."
+        },
+        {
+          "driver": "demand at this hour two weeks ago",
+          "effect_mw": -39.3,
+          "sentence": "Demand at this hour two weeks ago pulled it down by 39 MW."
+        }
+      ]
+    },
+    "typical forecast": {
+      "timestamp": "2020-01-18T00:00:00",
+      "forecast_mw": 1180.4,
+      "actual_mw": 1374.9,
+      "headline": "The forecast for Saturday 18 January at 12am is 1,180 MW, which is 4 MW below the average level the model has learned from the data.",
+      "drivers": [
+        {
+          "driver": "demand at this hour last week",
+          "effect_mw": -30.6,
+          "sentence": "Demand at this hour last week pulled it down by 31 MW."
+        },
+        {
+          "driver": "demand at this hour yesterday",
+          "effect_mw": 27.9,
+          "sentence": "Demand at this hour yesterday pushed it up by 28 MW."
+        },
+        {
+          "driver": "the cloud and rain water in the air",
+          "effect_mw": 17.1,
+          "sentence": "The cloud and rain water in the air pushed it up by 17 MW."
+        }
+      ]
+    }
+  }
+}
