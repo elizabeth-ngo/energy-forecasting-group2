@@ -1,0 +1,37 @@
+{
+  "model": "LSTM",
+  "run_config": {
+    "seed": 42,
+    "test_year": 2020,
+    "forecast_horizon_hours": 24,
+    "lookback_hours": 192,
+    "n_train_rows": 43560,
+    "n_test_rows": 4273,
+    "n_features": 20,
+    "hyperparameters": {
+      "recurrent_units": 64,
+      "dropout": 0.2,
+      "dense_units": 32,
+      "optimizer": "adam",
+      "loss": "mse",
+      "batch_size": 64,
+      "max_epochs": 40,
+      "early_stopping_patience": 5
+    },
+    "determinism_note": "Seeded with tf.keras.utils.set_random_seed. Exact on CPU; GPU training is not bit-reproducible."
+  },
+  "results": {
+    "Seasonal-naive baseline": {
+      "MAE": 71.6507004196042,
+      "RMSE": 100.09644073653246,
+      "MAPE (%)": 6.111388324307337
+    },
+    "LSTM": {
+      "MAE": 117.0854138232159,
+      "RMSE": 152.48431047058602,
+      "MAPE (%)": 10.226914841744243,
+      "TrainingSeconds": 2039.79,
+      "EpochsRun": 10
+    }
+  }
+}
