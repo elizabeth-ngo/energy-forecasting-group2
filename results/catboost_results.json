@@ -1,0 +1,44 @@
+{
+  "model": "CatBoost",
+  "run_config": {
+    "seed": 42,
+    "test_year": 2020,
+    "forecast_horizon_hours": 24,
+    "n_train_rows": 43439,
+    "n_test_rows": 4273,
+    "n_features": 28,
+    "hyperparameters": {
+      "iterations": 400,
+      "depth": 6,
+      "learning_rate": 0.05,
+      "random_seed": 42,
+      "verbose": 0,
+      "allow_writing_files": false
+    }
+  },
+  "results": {
+    "Seasonal-naive baseline": {
+      "MAE": 71.65070014041656,
+      "RMSE": 100.09644024444204,
+      "MAPE (%)": 6.111388301121782
+    },
+    "CatBoost": {
+      "MAE": 52.748119242036495,
+      "RMSE": 74.10287275844162,
+      "MAPE (%)": 4.565657246489134,
+      "TrainingSeconds": 4.31
+    }
+  },
+  "top_features": {
+    "lag_168": 27.7552,
+    "lag_336": 17.0575,
+    "lag_24": 15.2475,
+    "holiday": 12.2308,
+    "hour_cos": 3.0468,
+    "t2m_toc": 3.0266,
+    "day_sin": 2.9288,
+    "dayofweek": 2.4534,
+    "is_weekend": 1.8443,
+    "lag_48": 1.4679
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "model": "XGBoost",
+  "run_config": {
+    "seed": 42,
+    "test_year": 2020,
+    "forecast_horizon_hours": 24,
+    "n_train_rows": 43439,
+    "n_test_rows": 4273,
+    "n_features": 28,
+    "hyperparameters": {
+      "n_estimators": 400,
+      "max_depth": 6,
+      "learning_rate": 0.05,
+      "subsample": 0.9,
+      "colsample_bytree": 0.9,
+      "random_state": 42
+    }
+  },
+  "results": {
+    "Seasonal-naive baseline": {
+      "MAE": 71.65070014041656,
+      "RMSE": 100.09644024444204,
+      "MAPE (%)": 6.111388301121782
+    },
+    "XGBoost": {
+      "MAE": 53.52401965854823,
+      "RMSE": 75.3691419953626,
+      "MAPE (%)": 4.636671699289123,
+      "TrainingSeconds": 2.24
+    }
+  },
+  "top_features": {
+    "lag_168": 0.5716999769210815,
+    "lag_336": 0.14589999616146088,
+    "holiday": 0.08219999819993973,
+    "lag_24": 0.07739999890327454,
+    "is_weekend": 0.018400000408291817,
+    "hour_cos": 0.01640000008046627,
+    "t2m_toc": 0.014700000174343586,
+    "dayofweek": 0.01360000018030405,
+    "hour_sin": 0.005200000014156103,
+    "t2m_dav": 0.004999999888241291
+  }
+}
