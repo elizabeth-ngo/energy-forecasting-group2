@@ -32,7 +32,7 @@ def load_data(path=DATA_PATH):
     return df
 
 
-def make_features(df, lags=(1, 24, 168)):
+def make_features(df, lags=(24, 168)):
     """Add lag and rolling-mean features on the target (nat_demand)."""
     data = df.copy()
 
