@@ -11,33 +11,30 @@ Steps:
 
 import json
 import time
-import numpy as np
+from pathlib import Path
+
 import pandas as pd
 import xgboost as xgb
 
-from features import load_data, make_features, chronological_split
+from features import load_data, make_features, chronological_split, HORIZON
+# Elizabeth's shared metrics, so every model is scored by the same functions.
+from metrics import mae, rmse, mape, evaluate_all
 
-# using the same metrics as the dashboard (MAE, RMSE, MAPE)
-def mae(y_true, y_pred):
-    return float(np.mean(np.abs(np.asarray(y_true) - np.asarray(y_pred))))
+# Anchored to the repo root so it saves to the same place wherever I run it from.
+REPO_ROOT = Path(__file__).resolve().parents[1]
+RESULTS_PATH = REPO_ROOT / "results" / "xgboost_results.json"
+# Saved so explain_forecast.py explains this exact model, not a retrained one.
+MODEL_PATH = REPO_ROOT / "models" / "xgboost.json"
 
-def rmse(y_true, y_pred):
-    return float(np.sqrt(np.mean((np.asarray(y_true) - np.asarray(y_pred)) ** 2)))
-
-def mape(y_true, y_pred, eps=1e-8):
-    y_true = np.asarray(y_true, dtype=float)
-    y_pred = np.asarray(y_pred, dtype=float)
-    return float(np.mean(np.abs((y_true - y_pred) / (y_true + eps))) * 100)
-
-def evaluate_all(y_true, y_pred):
-    return {"MAE": mae(y_true, y_pred), "RMSE": rmse(y_true, y_pred), "MAPE (%)": mape(y_true, y_pred)}
+SEED = 42
+TEST_YEAR = 2020
 
 
 def main():
     # 1. Load , feature engineer, and split the data
     df = load_data()
     data, feature_cols = make_features(df)
-    train, test = chronological_split(data)
+    train, test = chronological_split(data, test_year=TEST_YEAR)
 
     X_train, y_train = train[feature_cols], train["nat_demand"]
     X_test, y_test = test[feature_cols], test["nat_demand"]
@@ -50,15 +47,18 @@ def main():
     results["Seasonal-naive baseline"] = evaluate_all(y_test, baseline_pred)
 
     # 3. Train XGBoost
+    # In a dict so the same values go into the model and into the saved run config.
+    params = {
+        "n_estimators": 400,
+        "max_depth": 6,
+        "learning_rate": 0.05,
+        "subsample": 0.9,
+        "colsample_bytree": 0.9,
+        "random_state": SEED,
+    }
+
     start = time.time()
-    model = xgb.XGBRegressor(
-        n_estimators=400,
-        max_depth=6,
-        learning_rate=0.05,
-        subsample=0.9,
-        colsample_bytree=0.9,
-        random_state=42,
-    )
+    model = xgb.XGBRegressor(**params)
     model.fit(X_train, y_train)
     train_secs = time.time() - start
 
@@ -78,6 +78,28 @@ def main():
                   .sort_values(ascending=False))
     print("\n=== Top 10 features driving the forecast ===")
     print(importance.head(10).round(3).to_string())
+
+    # 6. Save the scores and the settings that produced them (FR3).
+    RESULTS_PATH.parent.mkdir(parents=True, exist_ok=True)
+    RESULTS_PATH.write_text(json.dumps({
+        "model": "XGBoost",
+        "run_config": {
+            "seed": SEED,
+            "test_year": TEST_YEAR,
+            "forecast_horizon_hours": HORIZON,
+            "n_train_rows": len(train),
+            "n_test_rows": len(test),
+            "n_features": len(feature_cols),
+            "hyperparameters": params,
+        },
+        "results": results,
+        "top_features": importance.head(10).round(4).to_dict(),
+    }, indent=2))
+    print(f"\nSaved results and run config to {RESULTS_PATH}")
+
+    MODEL_PATH.parent.mkdir(parents=True, exist_ok=True)
+    model.save_model(MODEL_PATH)
+    print(f"Saved fitted model to {MODEL_PATH}")
 
 
 if __name__ == "__main__":
