@@ -30,6 +30,8 @@ from metrics import mae, rmse, mape, evaluate_all
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RESULTS_PATH = REPO_ROOT / "results" / "catboost_results.json"
 MODEL_PATH = REPO_ROOT / "models" / "catboost.cbm"
+# Written with the same columns as every other model, so the dashboard reads them the same way.
+PREDICTIONS_PATH = REPO_ROOT / "results" / "catboost_predictions.csv"
 
 # Have to match train_xgboost.py or the two models are not being tested on the same thing.
 SEED = 42
@@ -110,6 +112,16 @@ def main():
     MODEL_PATH.parent.mkdir(parents=True, exist_ok=True)
     model.save_model(str(MODEL_PATH))
     print(f"Saved fitted model to {MODEL_PATH}")
+
+    # 7. Save the predictions for the dashboard. actual_demand is in there too because
+    # the forecast versus actuals chart needs both, not just the predicted value.
+    pd.DataFrame({
+        "datetime": test["datetime"].values,
+        "actual_demand": y_test.values,
+        "predicted_demand": cat_pred,
+        "model_name": "CatBoost",
+    }).to_csv(PREDICTIONS_PATH, index=False)
+    print(f"Saved predictions to {PREDICTIONS_PATH}")
 
 
 if __name__ == "__main__":

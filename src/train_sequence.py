@@ -179,10 +179,12 @@ def main(model_type, epochs, lookback):
     }, indent=2))
     model.save(MODEL_DIR / f"{model_type}_model.keras")
 
+    # Same columns as the tree models write, so the dashboard reads them the same way.
     pd.DataFrame({
         "datetime": test_meta["datetime"],
-        "actual": actual,
-        "predicted": predictions,
+        "actual_demand": actual,
+        "predicted_demand": predictions,
+        "model_name": name,
     }).to_csv(RESULTS_DIR / f"{model_type}_predictions.csv", index=False)
 
     print(f"\nSaved results to {RESULTS_DIR / f'{model_type}_results.json'}")

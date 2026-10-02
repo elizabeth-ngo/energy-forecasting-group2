@@ -26,7 +26,7 @@
       "MAE": 52.748119242036495,
       "RMSE": 74.10287275844162,
       "MAPE (%)": 4.565657246489134,
-      "TrainingSeconds": 4.31
+      "TrainingSeconds": 1.38
     }
   },
   "top_features": {

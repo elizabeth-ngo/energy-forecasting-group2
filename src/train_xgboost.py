@@ -25,6 +25,8 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 RESULTS_PATH = REPO_ROOT / "results" / "xgboost_results.json"
 # Saved so explain_forecast.py explains this exact model, not a retrained one.
 MODEL_PATH = REPO_ROOT / "models" / "xgboost.json"
+# Written with the same columns as every other model, so the dashboard reads them the same way.
+PREDICTIONS_PATH = REPO_ROOT / "results" / "xgboost_predictions.csv"
 
 SEED = 42
 TEST_YEAR = 2020
@@ -41,7 +43,7 @@ def main():
 
     results = {}
 
-    # 2. Baseline: seasonal-naive 
+    # 2. Baseline: seasonal-naive
     # such as lag_168 is already a feature, we can just use that column for the baseline prediction
     baseline_pred = test["lag_168"].to_numpy()
     results["Seasonal-naive baseline"] = evaluate_all(y_test, baseline_pred)
@@ -100,6 +102,16 @@ def main():
     MODEL_PATH.parent.mkdir(parents=True, exist_ok=True)
     model.save_model(MODEL_PATH)
     print(f"Saved fitted model to {MODEL_PATH}")
+
+    # 7. Save the predictions for the dashboard. actual_demand is in there too because
+    # the forecast versus actuals chart needs both, not just the predicted value.
+    pd.DataFrame({
+        "datetime": test["datetime"].values,
+        "actual_demand": y_test.values,
+        "predicted_demand": xgb_pred,
+        "model_name": "XGBoost",
+    }).to_csv(PREDICTIONS_PATH, index=False)
+    print(f"Saved predictions to {PREDICTIONS_PATH}")
 
 
 if __name__ == "__main__":
