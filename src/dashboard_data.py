@@ -306,8 +306,8 @@ def window_scores(window: pd.DataFrame, models: list) -> pd.DataFrame:
 def format_scores(df: pd.DataFrame) -> pd.DataFrame:
     """Turn a numeric scores table into display strings (avoids NaN showing as 'None')."""
     out = pd.DataFrame({"Model": df["Model"]})
-    out["MAE (MW)"] = df["MAE (MW)"].map(lambda v: f"{v:,.1f}")
-    out["RMSE (MW)"] = df["RMSE (MW)"].map(lambda v: f"{v:,.1f}")
+    out["MAE (MW)"] = df["MAE (MW)"].map(lambda v: f"{v:,.2f}")
+    out["RMSE (MW)"] = df["RMSE (MW)"].map(lambda v: f"{v:,.2f}")
     out["MAPE (%)"] = df["MAPE (%)"].map(lambda v: f"{v:.2f}")
     if "MAE vs baseline (%)" in df.columns:
         out["Error vs baseline"] = df["MAE vs baseline (%)"].map(
@@ -327,13 +327,13 @@ def comparison_summary(scores: pd.DataFrame) -> list:
         return []
     lines = []
     best = models.iloc[0]
-    lines.append(f"{best['Model']} has the lowest average error ({best['MAE (MW)']:.1f} MW).")
+    lines.append(f"{best['Model']} has the lowest average error ({best['MAE (MW)']:.2f} MW).")
     if len(models) > 1:
         second = models.iloc[1]
         gap = second["MAE (MW)"] - best["MAE (MW)"]
         if gap / best["MAE (MW)"] <= CLOSE_TOLERANCE:
             lines.append(
-                f"{second['Model']} is only {gap:.1f} MW behind, so the two are effectively "
+                f"{second['Model']} is only {gap:.2f} MW behind, so the two are effectively "
                 "level on this test set."
             )
     base_rows = scores[scores["Model"] == BASELINE]
