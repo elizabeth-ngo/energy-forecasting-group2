@@ -73,6 +73,98 @@ These change a file in `results/` on purpose. Do them on your own copy of the re
 
 F2 passes when F2-01 to F2-06 pass on the current files, the automated run in F2-02 passes on a second machine (Jessica), and no F2 defect with a high rating is open in Jira.
 
+## F3 Forecast chart and controls (FR5), LSTM and GRU
+
+Owner: Joud. Repeat run on a second laptop: Elizabeth.
+
+**Expectation:** the chart loads and redraws quickly when the model or date range changes.
+
+**Quality metric and target:** seconds to load and seconds to redraw. Under 5 s to load and under 2 s to redraw on a team laptop.
+
+**Testing type:** performance testing.
+
+### Before you start
+
+Run every command from the repository root. Close other heavy apps. Use a stopwatch (phone is fine). Time three runs for each case and record the slowest.
+
+```
+git pull
+python -m streamlit run src/dashboard.py
+```
+
+| ID | What is checked | Steps | Expected result |
+|---|---|---|---|
+| F3-01 | Load time with LSTM | Stop the app and start it again. Start the stopwatch when http://localhost:8501 is opened. Stop it when the Forecast vs actual tab shows the chart with LSTM selected. Repeat 3 times. | Slowest of 3 runs is under 5 s. |
+| F3-02 | Load time with GRU | Same as F3-01 with only GRU selected. | Slowest of 3 runs is under 5 s. |
+| F3-03 | Redraw when switching to LSTM | With another model shown, select LSTM in the sidebar. Time from the click until the chart has finished redrawing. Repeat 3 times. | Slowest of 3 runs is under 2 s. |
+| F3-04 | Redraw when switching to GRU | Same as F3-03 for GRU. | Slowest of 3 runs is under 2 s. |
+| F3-05 | Redraw when the date range changes | With LSTM and GRU both selected, change the date range (for example 5 March 2020 to 5 April 2020). Time until the chart has finished redrawing. Repeat 3 times. | Slowest of 3 runs is under 2 s. |
+
+### Pass rule for F3
+
+F3 passes when F3-01 to F3-05 meet their targets on my laptop and Elizabeth's repeat run also meets them. The slowest time is the one recorded.
+
+## F5 Setup from a fresh clone (FR6), LSTM and GRU
+
+Owner: Joud. Observer: Elizabeth.
+
+**Expectation:** someone outside the team can get the dashboard running from the README alone.
+
+**Quality metric and target:** commands needed and errors met. 3 commands or fewer and no errors.
+
+**Testing type:** system testing.
+
+**Open point:** FR6 says no installation. Alisha is asking the facilitator whether a local run is accepted or the dashboard must be hosted. If hosting is required, F5-01 and F5-02 change to open the hosted link.
+
+### Before you start
+
+Use a different machine or a new empty folder, with no earlier copy of the repo. Open only the README. Do not use any other notes.
+
+| ID | What is checked | Steps | Expected result |
+|---|---|---|---|
+| F5-01 | A fresh clone runs from the README | Clone the repo into a new folder. Follow the README steps in order, typing only what it says. Count each command. | The dashboard opens in the browser using 3 commands or fewer. |
+| F5-02 | No errors met | During F5-01, note every error message or step that did not work. | 0 errors. Any error is written down with the step where it happened. |
+| F5-03 | LSTM and GRU are on the page | Open the Model comparison tab. | LSTM and GRU rows are shown with MAE, RMSE and MAPE. |
+| F5-04 | The README warnings are accurate | Follow the Troubleshooting lines in the README (yellow warning, `ModuleNotFoundError`, `git pull`). | Each line describes what actually happens. |
+
+### Pass rule for F5
+
+F5 passes when F5-01 to F5-03 pass on a machine that has not run the project before, with Elizabeth watching. Any step that fails or takes more than 3 commands is sent to Elizabeth so she can fix the README.
+
+## F6 End-to-end pipeline (FR1, FR2, FR3), LSTM and GRU
+
+Owner: Joud for the LSTM and GRU stages. Tree models: Jessica. Dashboard reload: Elizabeth.
+
+**Expectation:** each stage uses the last stage's output with no manual edits: cleaning, features, four models, results files, dashboard.
+
+**Quality metric and target:** stages that run in order from a fresh clone, and models that record seed, split and hyperparameters. 5 of 5 stages and 4 of 4 models.
+
+**Testing type:** integration testing.
+
+### Before you start
+
+Training writes to `results/`. Do this on your own copy and put the files back afterwards with `git restore results/`. Do not push changed results unless the team agrees.
+
+| ID | What is checked | Steps | Expected result |
+|---|---|---|---|
+| F6-01 | The LSTM stage runs from the features stage | From a fresh clone, run the LSTM training script in `src/train_sequence.py` as the README says. | It finishes with no error and writes LSTM predictions and results files to `results/`. No file was edited by hand. |
+| F6-02 | The GRU stage runs the same way | Run the GRU training script the same way. | It finishes with no error and writes GRU predictions and results files to `results/`. |
+| F6-03 | LSTM and GRU record seed, split and hyperparameters | Open `results/lstm_results.json` and `results/gru_results.json`. | Each file states the seed, the train/test split and the hyperparameters (including lookback hours). |
+| F6-04 | The predictions line up with the other models | Open `results/lstm_predictions.csv` and `results/gru_predictions.csv`. Compare with `results/xgboost_predictions.csv`. | Same columns (`datetime`, `actual_demand`, `predicted_demand`, `model_name`) and the same hours. |
+| F6-05 | The dashboard uses the new output | Reload the dashboard after F6-01 and F6-02. | The LSTM and GRU numbers and the Run settings table match the new results files. No warning appears. |
+
+### Pass rule for F6
+
+F6 passes when F6-01 to F6-05 pass for LSTM and GRU, so the team reaches 4 of 4 models recording seed, split and hyperparameters together with Jessica's tree models.
+
+### Results for F3, F5 and F6
+
+Fill in a row each time the cases are run. Leave the rows empty until then.
+
+| Date | Tester | Machine | Cases run | Slowest time or result | Passed | Failed | Jira ticket for each failure |
+|---|---|---|---|---|---|---|---|
+| | | | | | | | |
+
 ## Results
 
 Fill in a row each time the cases are run. Leave the row empty until then.
