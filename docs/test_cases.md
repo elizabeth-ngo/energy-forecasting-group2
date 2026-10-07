@@ -147,9 +147,9 @@ Training writes to `results/`. Do this on your own copy and put the files back a
 
 | ID | What is checked | Steps | Expected result |
 |---|---|---|---|
-| F6-01 | The LSTM stage runs from the features stage | From a fresh clone, run the LSTM training script in `src/train_sequence.py` as the README says. | It finishes with no error and writes LSTM predictions and results files to `results/`. No file was edited by hand. |
-| F6-02 | The GRU stage runs the same way | Run the GRU training script the same way. | It finishes with no error and writes GRU predictions and results files to `results/`. |
-| F6-03 | LSTM and GRU record seed, split and hyperparameters | Open `results/lstm_results.json` and `results/gru_results.json`. | Each file states the seed, the train/test split and the hyperparameters (including lookback hours). |
+| F6-01 | The LSTM stage runs from the features stage | From a fresh clone, run `python3 src/train_sequence.py --model lstm`. Training is slow: the last recorded run took about 2,040 s (34 minutes). | It finishes with no error and rewrites `results/lstm_predictions.csv` and `results/lstm_results.json`. No file was edited by hand. The MAE should match the previous run (seed 42, exact on CPU). |
+| F6-02 | The GRU stage runs the same way | Run `python3 src/train_sequence.py --model gru`. | It finishes with no error and rewrites `results/gru_predictions.csv` and `results/gru_results.json`. No file was edited by hand. |
+| F6-03 | LSTM and GRU record seed, split and hyperparameters | Open `results/lstm_results.json` and `results/gru_results.json` and look under `run_config`. | Each file shows `seed`, `test_year`, `lookback_hours`, `n_train_rows`, `n_test_rows` and a `hyperparameters` block. |
 | F6-04 | The predictions line up with the other models | Open `results/lstm_predictions.csv` and `results/gru_predictions.csv`. Compare with `results/xgboost_predictions.csv`. | Same columns (`datetime`, `actual_demand`, `predicted_demand`, `model_name`) and the same hours. |
 | F6-05 | The dashboard uses the new output | Reload the dashboard after F6-01 and F6-02. | The LSTM and GRU numbers and the Run settings table match the new results files. No warning appears. |
 
