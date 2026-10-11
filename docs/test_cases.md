@@ -173,5 +173,5 @@ Fill in a row each time the cases are run. Leave the row empty until then.
 
 | Date | Tester | Machine | Cases run | Passed | Failed | Jira ticket for each failure |
 |---|---|---|---|---|---|---|
-| 6/10/2026 | Elizabeth | Windows laptop, local run | F2-01 to F2-06 | 5 | 1 | F2-05: scores were shown to 1 decimal, so the gap to the results file could reach 0.05 MW. Fixed by showing 2 decimals. Ticket to be added. |
+| 6/10/2026 | Elizabeth | Windows laptop, local run | F2-01 to F2-06 | 5 | 1 | F2-05: scores were shown to 1 decimal, so the gap to the results file could reach 0.05 MW. Fixed by showing 2 decimals. Ticket KAN-19. |
 | 6/10/2026 | Elizabeth | Windows laptop, local run | F2-02 and F2-05, re-run after the fix | 2 | 0 | none |
