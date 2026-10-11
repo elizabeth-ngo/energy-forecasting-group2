@@ -260,3 +260,4 @@ Fill in a row each time the cases are run. Leave the row empty until then.
 | 6/10/2026 | Elizabeth | Windows laptop, local run | F2-01 to F2-06 | 5 | 1 | F2-05: scores were shown to 1 decimal, so the gap to the results file could reach 0.05 MW. Fixed by showing 2 decimals. Ticket to be added. |
 | 6/10/2026 | Elizabeth | Windows laptop, local run | F2-02 and F2-05, re-run after the fix | 2 | 0 | none |
 | 11/10/2026 | Jessica | MacBook, local run | F2-02 | 1 | 0 | none |
+| 11/10/2026 | Elizabeth | Windows laptop, local run | F2-01 and F2-02, re-run after Jessica's update to results/ | 2 | 0 | none |
