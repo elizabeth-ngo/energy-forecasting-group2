@@ -4,6 +4,31 @@ Group 2, ICT30016 ICT Innovation Project. Test basis: Week 8 work log, Activity 
 
 Each member writes the test cases for their own features in their own section below. Pull before editing this file and push straight after, so edits do not collide.
 
+## Requirements check (FR1 to FR6)
+
+Owner: Alisha. Open the dashboard as described in the README, look at the place in the third column, and write Met, Partly met or Not met in the Result column. Add one line of evidence, such as what you saw or a screenshot name.
+
+| FR | What to check | Where to look | Result | Evidence or note | Tester and date |
+|---|---|---|---|---|---|
+| FR1 | One table with MAE, RMSE and MAPE for the baseline and all four models | Dashboard, Model comparison tab | | | |
+| FR2 | One pipeline for cleaning and features that any dataset can pass through without rewriting dataset-specific code | The scripts in src/, ask Jessica and Joud | | | |
+| FR3 | Seed, data split and hyperparameters shown for every model run | Dashboard, About the models tab | | | |
+| FR4 | The main factors behind a forecast written in plain English | Dashboard, Why this forecast tab | | | |
+| FR5 | Day-ahead forecast against recent actual demand, with an error band | Dashboard, Forecast vs actual tab (pick one model in the sidebar) | | | |
+| FR6 | Results load without the user running code or installing software | README steps, and the facilitator's answer on local run or hosted | | | |
+
+## F4 reviewer sessions (plain-English explanation)
+
+Owner: Alisha. Target: 4 of 5 reviewers can state the forecast and its main driver without help.
+
+| Reviewer | Date | Could state the forecast? | Could name the main driver? | Where they hesitated |
+|---|---|---|---|---|
+| 1 | | | | |
+| 2 | | | | |
+| 3 | | | | |
+| 4 | | | | |
+| 5 | | | | |
+
 ## F2 Results loading (FR1, FR2, FR3)
 
 Owner: Elizabeth. Automated run on a second machine: Jessica.
