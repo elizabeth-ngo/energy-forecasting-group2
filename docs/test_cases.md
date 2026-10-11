@@ -162,6 +162,7 @@ F6 passes when F6-01 to F6-05 pass for LSTM and GRU, so the team reaches 4 of 4 
 Fill in a row each time the cases are run. Leave the rows empty until then.
 
 | Date | Tester | Machine | Cases run | Slowest time or result | Passed | Failed | Jira ticket for each failure |
+|---|---|---|---|---|---|---|---|
 | 11/10/2026 | Joud | MacBook Air, local run | F3-01 to F3-05 | Load 2.04 s, redraw 0.93 s (slowest of 3) | 5 | 0 | none |
 
 ## Results
