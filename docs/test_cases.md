@@ -10,11 +10,11 @@ Owner: Alisha. Open the dashboard as described in the README, look at the place 
 
 | FR | What to check | Where to look | Result | Evidence or note | Tester and date |
 |---|---|---|---|---|---|
-| FR1 | One table with MAE, RMSE and MAPE for the baseline and all four models | Dashboard, Model comparison tab | | | |
-| FR2 | One pipeline for cleaning and features that any dataset can pass through without rewriting dataset-specific code | The scripts in src/, ask Jessica and Joud | | | |
-| FR3 | Seed, data split and hyperparameters shown for every model run | Dashboard, About the models tab | | | |
-| FR4 | The main factors behind a forecast written in plain English | Dashboard, Why this forecast tab | | | |
-| FR5 | Day-ahead forecast against recent actual demand, with an error band | Dashboard, Forecast vs actual tab (pick one model in the sidebar) | | | |
+| FR1 | One table with MAE, RMSE and MAPE for the baseline and all four models | Dashboard, Model comparison tab |Met | All 5 rows has results for MAE, RMSE & MAPE| Alisha 10/10/26 |
+| FR2 | One pipeline for cleaning and features that any dataset can pass through without rewriting dataset-specific code | The scripts in src/, ask Jessica and Joud |Partly met |Used only for the primary dataset (code adjustments) |Alisha 10/10/26|
+| FR3 | Seed, data split and hyperparameters shown for every model run | Dashboard, About the models tab |Met| Each model displays seed, data & hyperparameters| Alisha 10/10/26|
+| FR4 | The main factors behind a forecast written in plain English | Dashboard, Why this forecast tab |Met | Features the reviewer sessions with 5 reviewers| Alisha 11/10/26|
+| FR5 | Day-ahead forecast against recent actual demand, with an error band | Dashboard, Forecast vs actual tab (pick one model in the sidebar) | Met |chosen model in sidebar displays forecast vs actual demand | Alisha 11/10/26
 | FR6 | Results load without the user running code or installing software | README steps, and the facilitator's answer on local run or hosted | | | |
 
 ## F1 Accuracy and repeatability of the tree model (FR1, FR3)
