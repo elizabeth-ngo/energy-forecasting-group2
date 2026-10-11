@@ -169,8 +169,8 @@ def main():
     model = xgb.XGBRegressor()
     model.load_model(MODEL_PATH)
 
-    sample = test.sample(min(SAMPLE_SIZE, len(test)), random_state=SEED).sort_index()
-    X = sample[feature_cols]
+    # Every test row, not a sample. A sample was enough when all I needed was the test set drivers chart, but the dashboard needs to be able to look up any hour.
+    X = test[feature_cols]
 
     # TreeExplainer for gradient boosting: exact, not the sampling approximation
     explainer = shap.TreeExplainer(model)
@@ -182,27 +182,33 @@ def main():
     print("\n=== Average effect on the forecast (MW) ===")
     print(importance.sort_values(ascending=False).round(2).to_string())
 
-    # Highest, lowest and median rather than three random rows, so the report shows the
-    # sentences holding up at the extremes and not just on a cherry-picked hour.
-    predictions = pd.Series(model.predict(X), index=sample.index)
+    predictions = pd.Series(model.predict(X), index=test.index)
+    base_value = float(explainer.expected_value)
+
+    by_index = {}
+    for position, idx in enumerate(test.index):
+        by_index[idx] = explain_one(
+            timestamp=test.loc[idx, "datetime"],
+            prediction=predictions.loc[idx],
+            actual=test.loc[idx, "nat_demand"],
+            base_value=base_value,
+            contributions=grouped.iloc[position],
+        )
+
+    # Highest, lowest and median rather than three random rows, so the report shows the senetece generation works on the most interesting cases. The dashboard can look up any row, so it does not need to see a random sample.
     picks = {
         "highest forecast": predictions.idxmax(),
         "lowest forecast": predictions.idxmin(),
-        "typical forecast": (predictions - predictions.median()).abs().idxmin(),
+        "mid-range forecast": (predictions - predictions.median()).abs().idxmin(),
     }
+    explanations = {label: by_index[idx] for label, idx in picks.items()}
+    for idx in test.index:
+        stamp = test.loc[idx, "datetime"]
+        explanations[f"{stamp:%Y-%m-%d %H:%M}"] = by_index[idx]
 
-    explanations = {}
     print("\n=== Worked examples ===")
-    for label, idx in picks.items():
-        position = sample.index.get_loc(idx)
-        item = explain_one(
-            timestamp=sample.loc[idx, "datetime"],
-            prediction=predictions.loc[idx],
-            actual=sample.loc[idx, "nat_demand"],
-            base_value=float(explainer.expected_value),
-            contributions=grouped.iloc[position],
-        )
-        explanations[label] = item
+    for label in picks:
+        item = explanations[label]
         print(f"\n[{label}]  actual was {item['actual_mw']:,.0f} MW")
         print(item["headline"])
         for driver in item["drivers"]:
