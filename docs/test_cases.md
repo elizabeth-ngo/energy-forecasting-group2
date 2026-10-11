@@ -60,11 +60,11 @@ Owner: Alisha. Target: 4 of 5 reviewers can state the forecast and its main driv
 
 | Reviewer | Date | Could state the forecast? | Could name the main driver? | Where they hesitated |
 |---|---|---|---|---|
-| 1 | | | | |
-| 2 | | | | |
-| 3 | | | | |
-| 4 | | | | |
-| 5 | | | | |
+| 1 |10/10/26 |Yes|Yes| Brief pause on reading SHAP importance scale|
+| 2 |10/10/26 |Yes|Yes|None|
+| 3 | 11/10/26|Yes|Yes| Took a little bit of time to understand (lag) names |
+| 4 |11/10/26 |Yes|Yes| A little bit confused on the terminology|
+| 5 |12/10/26 |Yes|Yes|none|
 
 ## F2 Results loading (FR1, FR2, FR3)
 
