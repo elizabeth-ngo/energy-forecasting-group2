@@ -166,6 +166,20 @@ python -m streamlit run src/dashboard.py
 
 F3 passes when F3-01 to F3-05 meet their targets on my laptop and Elizabeth's repeat run also meets them. The slowest time is the one recorded.
 
+### F3 repeat run (Elizabeth)
+
+Run on 11 Oct 2026 on my own Windows laptop, local run, with the current results files (including the full shap_explanations.json). Times are in seconds.
+
+| Case | Runs | Slowest | Target | Result |
+|---|---|---|---|---|
+| F3-01 Load time with LSTM | 1.91, 1.86, 1.75, 1.75, 1.91 | 1.91 | under 5 | Pass |
+| F3-02 Load time with GRU | Same measurement as F3-01: the page always opens with all four models selected | 1.91 | under 5 | Pass |
+| F3-03 Redraw when switching to LSTM | 0.63, 0.56, 0.43, 0.44, 0.51 | 0.63 | under 2 | Pass |
+| F3-04 Redraw when switching to GRU | 0.60, 0.60, 0.46, 0.64, 0.61 | 0.64 | under 2 | Pass |
+| F3-05 Redraw when the date range changes (5 Mar to 5 Apr 2020) | 0.73, 0.75, 0.83 | 0.83 | under 2 | Pass |
+
+F3 passes on both laptops. The slowest times recorded are Joud's: 2.04 s to load and 0.93 s to redraw.
+
 ## F5 Setup from a fresh clone (FR6), LSTM and GRU
 
 Owner: Joud. Observer: Elizabeth.
