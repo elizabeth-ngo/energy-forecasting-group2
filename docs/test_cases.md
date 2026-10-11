@@ -164,7 +164,7 @@ Fill in a row each time the cases are run. Leave the rows empty until then.
 | Date | Tester | Machine | Cases run | Slowest time or result | Passed | Failed | Jira ticket for each failure |
 |---|---|---|---|---|---|---|---|
 | 11/10/2026 | Joud | MacBook Air, local run | F3-01 to F3-05 | Load 2.04 s, redraw 0.93 s (slowest of 3) | 5 | 0 | none |
-| 11/10/2026 | Joud | MacBook Air, fresh clone on Desktop | F5-01 to F5-03 | 8 commands, 3 | 11/10/2026 | Joud | MacBook Air, fresh clone on Desktop | F5-01 to F5-03 | 8 commands, 3 errors (pip and python not found; python3 and pip3 needed on Mac). F5-03 passed. | 1 | 2 | to be added |
+| 11/10/2026 | Joud | MacBook Air, fresh clone on Desktop | F5-01 to F5-03 | 8 commands, 3 errors (pip and python not found; python3 and pip3 needed on Mac). F5-03 passed. | 1 | 2 | KAN-19 |
 
 
 ## Results
@@ -173,5 +173,5 @@ Fill in a row each time the cases are run. Leave the row empty until then.
 
 | Date | Tester | Machine | Cases run | Passed | Failed | Jira ticket for each failure |
 |---|---|---|---|---|---|---|
-| 6/10/2026 | Elizabeth | Windows laptop, local run | F2-01 to F2-06 | 5 | 1 | F2-05: scores were shown to 1 decimal, so the gap to the results file could reach 0.05 MW. Fixed by showing 2 decimals. Ticket KAN-19. |
+| 6/10/2026 | Elizabeth | Windows laptop, local run | F2-01 to F2-06 | 5 | 1 | F2-05: scores were shown to 1 decimal, so the gap to the results file could reach 0.05 MW. Fixed by showing 2 decimals. Ticket to be added. |
 | 6/10/2026 | Elizabeth | Windows laptop, local run | F2-02 and F2-05, re-run after the fix | 2 | 0 | none |
