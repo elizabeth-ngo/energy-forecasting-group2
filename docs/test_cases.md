@@ -162,8 +162,7 @@ F6 passes when F6-01 to F6-05 pass for LSTM and GRU, so the team reaches 4 of 4 
 Fill in a row each time the cases are run. Leave the rows empty until then.
 
 | Date | Tester | Machine | Cases run | Slowest time or result | Passed | Failed | Jira ticket for each failure |
-|---|---|---|---|---|---|---|---|
-| | | | | | | | |
+| 11/10/2026 | Joud | MacBook Air, local run | F3-01 to F3-05 | Load 2.04 s, redraw 0.93 s (slowest of 3) | 5 | 0 | none |
 
 ## Results
 
@@ -173,15 +172,3 @@ Fill in a row each time the cases are run. Leave the row empty until then.
 |---|---|---|---|---|---|---|
 | 6/10/2026 | Elizabeth | Windows laptop, local run | F2-01 to F2-06 | 5 | 1 | F2-05: scores were shown to 1 decimal, so the gap to the results file could reach 0.05 MW. Fixed by showing 2 decimals. Ticket to be added. |
 | 6/10/2026 | Elizabeth | Windows laptop, local run | F2-02 and F2-05, re-run after the fix | 2 | 0 | none |
-
-## Security check (no passwords or tokens in the repository)
-
-Owner: Elizabeth. Run on 8 Oct 2026 on the full repository.
-
-| Check | Command | Result |
-|---|---|---|
-| Search current files | `git grep -n -i -E "password\|passwd\|secret\|token\|api[_-]?key\|ghp_\|github_pat_\|AKIA\|BEGIN (RSA\|OPENSSH\|PRIVATE)"` | One GitHub access token found in `notebooks/dataset_check_.ipynb`. Removed in commit eac332e. |
-| Search commit history | `git log --all --oneline -G "ghp_\|github_pat_\|AKIA\|BEGIN (RSA\|OPENSSH\|PRIVATE)" -- . ":(exclude)*.csv"` | Only the commit that added the notebook (393b0aa) and the commit that removed the token (eac332e). No other secrets. |
-| Search file names | `git ls-files \| Select-String -Pattern "\.env\|secret\|credential\|\.pem\|\.key\|token"` | No matches. |
-| Token revoked on GitHub | Settings, Developer settings, Personal access tokens | Revoked on 8 Oct 2026. |
-| Search after the fix | `git grep -n -i -E "ghp_\|github_pat_"` | No matches. |
