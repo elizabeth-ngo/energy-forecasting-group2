@@ -15,7 +15,7 @@ Owner: Alisha. Open the dashboard as described in the README, look at the place 
 | FR3 | Seed, data split and hyperparameters shown for every model run | Dashboard, About the models tab |Met| Each model displays seed, data & hyperparameters| Alisha 10/10/26|
 | FR4 | The main factors behind a forecast written in plain English | Dashboard, Why this forecast tab |Met | Features the reviewer sessions with 5 reviewers| Alisha 11/10/26|
 | FR5 | Day-ahead forecast against recent actual demand, with an error band | Dashboard, Forecast vs actual tab (pick one model in the sidebar) | Met |chosen model in sidebar displays forecast vs actual demand | Alisha 11/10/26
-| FR6 | Results load without the user running code or installing software | README steps, and the facilitator's answer on local run or hosted | | | |
+| FR6 | Results load without the user running code or installing software | README steps, and the facilitator's answer on local run or hosted |Not met | Requires local installation (tracked via KAN-19)  |Alisha 11/10/26|
 
 ## F1 Accuracy and repeatability of the tree model (FR1, FR3)
 
