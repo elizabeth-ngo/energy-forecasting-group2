@@ -17,6 +17,43 @@ Owner: Alisha. Open the dashboard as described in the README, look at the place 
 | FR5 | Day-ahead forecast against recent actual demand, with an error band | Dashboard, Forecast vs actual tab (pick one model in the sidebar) | | | |
 | FR6 | Results load without the user running code or installing software | README steps, and the facilitator's answer on local run or hosted | | | |
 
+## F1 Accuracy and repeatability of the tree model (FR1, FR3)
+
+Jessica owns it. Run again on a different machine: Elizabeth.
+
+**Expectation:** XGBoost and CatBoost make a real day-ahead forecast that is better than the seasonal-naive baseline, and any saved run can be used again from the way it was saved.
+
+**Quality metric and target:** compare the MAE to the seasonal-naive baseline, and see if the recorded score can be reproduced on a second run. Both tree models have an MAE at least 20% lower than the baseline, and a second run on the same computer gives exactly the same score, down to three decimal places.
+
+Types of testing: regression testing and unit testing.
+
+`src/features.py`, `src/train_xgboost.py`, `src/train_catboost.py`, and `src/metrics.py` are the files that are being tested.
+
+### Before you begin
+
+Use the root of the repository to run all of these commands:
+
+```
+git pull
+pip install xgboost catboost pandas numpy scikit-learn
+```
+
+Files in `results/` are changed by training. If you don't want to keep the output, do this on your own copy and then use `git restore results/` to get it back.
+
+| ID | What is checked | Steps | Expected result |
+|---|---|---|---|
+| F1-01 | Both tree models beat the seasonal-naive baseline | Run `python src/train_xgboost.py` and `python src/train_catboost.py`. Read the comparison table that's been printed out. | The baseline MAE is 71.651 MW. CatBoost and XGBoost are both at least 20% below it. Last seen, XGBoost had 53.524 MW and CatBoost had 52.748 MW, which is about 26% lower. |
+| F1-02 | The same run happens the same way on the same machine | Run `python src/train_xgboost.py` twice without making any changes to it. Compare the MAE, RMSE and MAPE in `results/xgboost_results.json` between the two runs. | All three of them are the same to three decimal places. You can ignore `TrainingSeconds` because it is expected to be different. |
+| F1-03 | Scores on a second machine | Elizabeth runs `python src/train_xgboost.py` on her machine and sends in the MAE. | The MAE is within 1 MW of 53.524. An exact match is **not** expected. One machine with the same code and seed gave 52.918 and another gave 53.524, because the XGBoost build is different. This is a known problem, which is why KPI 1 says the same environment instead of only the same CPU. It is expected that CatBoost will match perfectly. |
+| F1-04 | The run configuration is recorded | Open `results/xgboost_results.json` and `results/catboost_results.json` and look for `run_config`. | Each one shows `seed`, `test_year`, `forecast_horizon_hours`, `n_train_rows`, `n_test_rows`, `n_features`, and a `hyperparameters` block with a list of all the values that were given to the model. |
+| F1-05 | The forecast is really for the next day | Open `src/features.py`. Make sure to look at `HORIZON` and the `lags` default in `make_features`. Then run `python -c "import sys; sys.path.insert(0,'src'); from features import make_features, load_data; make_features(load_data(), lags=(1, 24))"` | `HORIZON` is 24 and every lag is at least 24. The command throws a `ValueError` saying the lag is shorter than the horizon, so adding a feature that falls inside the forecast gap by accident is not possible. |
+| F1-06 | There is only one piece of code that scores each model | Look in `src/train_xgboost.py`, `src/train_catboost.py` and `src/train_sequence.py` for `def mae` or `def rmse`. | No training script sets its own metric functions. All three import from `src/metrics.py`. |
+| F1-07 | The saved score matches the saved predictions | Run `python -c "import pandas as pd, json; d=pd.read_csv('results/xgboost_predictions.csv'); print(round((d.actual_demand-d.predicted_demand).abs().mean(),3), round(json.load(open('results/xgboost_results.json'))['results']['XGBoost']['MAE'],3))"` | The two numbers printed are the same to three decimal places. Do it again for CatBoost. |
+
+### F1 pass rule
+
+F1 passes when F1-01, F1-02 and F1-04 to F1-07 pass on my machine, and F1-03 falls within the 1 MW tolerance on Elizabeth's. Each failure is raised in Jira with both scores and the machine each one came from.
+
 ## F4 reviewer sessions (plain-English explanation)
 
 Owner: Alisha. Target: 4 of 5 reviewers can state the forecast and its main driver without help.
@@ -182,6 +219,28 @@ Training writes to `results/`. Do this on your own copy and put the files back a
 
 F6 passes when F6-01 to F6-05 pass for LSTM and GRU, so the team reaches 4 of 4 models recording seed, split and hyperparameters together with Jessica's tree models.
 
+### Tree model stages: XGBoost and CatBoost
+
+Jessica is the owner for the XGBoost, CatBoost and explanation stages. Joud covers the LSTM and GRU stages in F6-01 to F6-05 above. These follow on from Joud's numbers so the F6 pass rule covers all four models.
+
+| ID | What is checked | Steps | Expected result |
+|---|---|---|---|
+| F6-06 | The XGBoost stage runs after the features stage | Run `python src/train_xgboost.py` from a fresh copy. It only takes seconds to train. | It finishes without any errors and writes `results/xgboost_predictions.csv`, `results/xgboost_results.json` and `models/xgboost.json`. No files were changed by hand. |
+| F6-07 | The CatBoost stage runs the same way | Run `python src/train_catboost.py`. | It finishes without any errors and writes `results/catboost_predictions.csv`, `results/catboost_results.json` and `models/catboost.cbm`. |
+| F6-08 | Both tree models record seed, split and hyperparameters | Open both results files and look under `run_config`. | Each one shows `seed`, `test_year`, `forecast_horizon_hours`, `n_train_rows`, `n_test_rows`, `n_features` and a `hyperparameters` block. Put together with F6-03, this makes 4 of 4 models. |
+| F6-09 | The predictions line up with the other models | Compare `results/xgboost_predictions.csv` and `results/catboost_predictions.csv` with the LSTM and GRU files. | Same columns (`datetime`, `actual_demand`, `predicted_demand`, `model_name`), 4,273 rows and the same hours in all four. |
+| F6-10 | The explanation stage starts from the saved model | After F6-06, run `python src/explain_forecast.py`. | It finishes without any errors and rewrites `results/shap_explanations.json` and `results/shap_drivers.png`. There is a record for every test hour, not just the three named examples. Check with `python -c "import json; print(len(json.load(open('results/shap_explanations.json'))['examples']))"`, which prints 4276, being three named examples plus 4,273 hours. |
+| F6-11 | The explanations match the predictions | Run `python src/dashboard_data.py`. | The last line says `No warnings: all files line up.` A mismatch means the explanations and predictions came from different training runs, so both scripts need running again in the right order. |
+| F6-12 | The dashboard uses the new output | Reload the dashboard after F6-06, F6-07 and F6-10. | The XGBoost and CatBoost numbers and the Run settings table match the new results files. The Why this forecast tab can explain any hour in the date range, not just three. No warning appears. |
+
+#### Pass rule for the tree model stages
+
+F6-06 to F6-12 pass on a fresh copy with no changes made by hand to any file in between, and the dashboard reload in F6-12 shows no warning.
+
+#### Note on the order of the stages
+
+`explain_forecast.py` reads the saved model in `models/`, which git ignores, so it is never in a new copy. It has to run after `train_xgboost.py`, and they both need to come from the same training run. Running the explanation stage against an older model gives explanations whose forecast values don't match `xgboost_predictions.csv`, which is what F6-11 is there to catch.
+
 ### Results for F3, F5 and F6
 
 Fill in a row each time the cases are run. Leave the rows empty until then.
@@ -200,3 +259,4 @@ Fill in a row each time the cases are run. Leave the row empty until then.
 |---|---|---|---|---|---|---|
 | 6/10/2026 | Elizabeth | Windows laptop, local run | F2-01 to F2-06 | 5 | 1 | F2-05: scores were shown to 1 decimal, so the gap to the results file could reach 0.05 MW. Fixed by showing 2 decimals. Ticket to be added. |
 | 6/10/2026 | Elizabeth | Windows laptop, local run | F2-02 and F2-05, re-run after the fix | 2 | 0 | none |
+| 11/10/2026 | Jessica | MacBook, local run | F2-02 | 1 | 0 | none |
