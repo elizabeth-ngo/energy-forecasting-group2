@@ -3,7 +3,7 @@
 
 The dashboard shows the forecasts from all four models (XGBoost, CatBoost, LSTM, GRU) against the actual demand, compares their scores, and explains forecasts in plain English. It reads the files in `results/`, so those files must be present.
 
-You need Python 3 (the project was tested with 3.11). Run every command from the repository root.
+You need Python 3 (the project was tested with 3.9 and 3.11). Run every command from the repository root.
 
 1. Get the code. First time only:
 
@@ -19,13 +19,13 @@ You need Python 3 (the project was tested with 3.11). Run every command from the
    Windows:
 
 ```
-   pip install streamlit altair pandas numpy
+      pip install -r requirements.txt
 ```
 
    macOS and Linux:
 
 ```
-   python3 -m pip install streamlit altair pandas numpy
+      python3 -m pip install -r requirements.txt
 ```
 
 3. Start the dashboard.
