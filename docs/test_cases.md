@@ -276,3 +276,4 @@ Fill in a row each time the cases are run. Leave the row empty until then.
 | 6/10/2026 | Elizabeth | Windows laptop, local run | F2-02 and F2-05, re-run after the fix | 2 | 0 | none |
 | 11/10/2026 | Jessica | MacBook, local run | F2-02 | 1 | 0 | none |
 | 11/10/2026 | Elizabeth | Windows laptop, local run | F2-01 and F2-02, re-run after Jessica's update to results/ | 2 | 0 | none |
+| 18/10/2026 | Elizabeth | Windows laptop | F2-05 re-run after default date range change | 1 | 0 |(found by Jessica: default view showed 54.24, fixed to 53.52) |
