@@ -300,7 +300,7 @@ if not selected:
     st.stop()
 
 min_day, max_day = first_ts.date(), last_ts.date()
-default_start = max(min_day, max_day - timedelta(days=6))
+default_start = min_day
 picked = st.sidebar.date_input(
     "Date range", value=(default_start, max_day), min_value=min_day, max_value=max_day
 )
