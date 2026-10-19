@@ -28,7 +28,8 @@ from features import load_data, make_features, chronological_split, HORIZON
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 MODEL_PATH = REPO_ROOT / "models" / "xgboost.json"
-CHART_PATH = REPO_ROOT / "results" / "shap_drivers.png"
+# Named per model so the XGBoost and CatBoost charts can sit side by side on a slide
+CHART_PATH = REPO_ROOT / "results" / "xgboost_drivers.png"
 SENTENCES_PATH = REPO_ROOT / "results" / "shap_explanations.json"
 
 # Rows to run SHAP over, and the random seed to make the sample reproducible. The dashboard does not need to see every row, and SHAP is slow on large datasets.
@@ -86,7 +87,7 @@ def grouped_shap(shap_values, feature_cols):
     return frame.T.groupby(frame.columns.map(group_of)).sum().T
 
 
-def plot_global_drivers(grouped):
+def plot_global_drivers(grouped, chart_path=CHART_PATH, model_label="XGBoost"):
     """Horizontal bar of what drives the forecast on average across the test set."""
     # Absolute zeros are not interesting, so drop them. The rest are sorted by the average absolute effect on the forecast.
     importance = grouped.abs().mean().sort_values()
@@ -101,8 +102,8 @@ def plot_global_drivers(grouped):
                     textcoords="offset points", va="center",
                     fontsize=8.5, color=INK)
 
-    ax.set_title("What drives the day-ahead forecast", fontsize=13, color=INK,
-                 loc="left", pad=16)
+    ax.set_title(f"What drives the {model_label} day-ahead forecast", fontsize=13,
+                 color=INK, loc="left", pad=16)
     ax.set_xlabel("Average effect on the forecast (MW)", fontsize=9, color=MUTED)
     ax.tick_params(axis="y", labelsize=9.5, colors=INK, length=0)
     ax.tick_params(axis="x", labelsize=8.5, colors=MUTED, length=0)
@@ -115,8 +116,8 @@ def plot_global_drivers(grouped):
     ax.set_xlim(0, importance.max() * 1.15)
 
     fig.tight_layout()
-    fig.savefig(CHART_PATH, dpi=200, facecolor=fig.get_facecolor())
-    print(f"Saved drivers chart to {CHART_PATH}")
+    fig.savefig(chart_path, dpi=200, facecolor=fig.get_facecolor())
+    print(f"Saved drivers chart to {chart_path}")
     return importance
 
 
