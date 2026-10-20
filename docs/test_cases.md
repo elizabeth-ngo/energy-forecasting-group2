@@ -35,7 +35,7 @@ Use the root of the repository to run all of these commands:
 
 ```
 git pull
-pip install xgboost catboost pandas numpy scikit-learn
+pip install -r requirements-training.txt
 ```
 
 Files in `results/` are changed by training. If you don't want to keep the output, do this on your own copy and then use `git restore results/` to get it back.
@@ -44,7 +44,7 @@ Files in `results/` are changed by training. If you don't want to keep the outpu
 |---|---|---|---|
 | F1-01 | Both tree models beat the seasonal-naive baseline | Run `python src/train_xgboost.py` and `python src/train_catboost.py`. Read the comparison table that's been printed out. | The baseline MAE is 71.651 MW. CatBoost and XGBoost are both at least 20% below it. Last seen, XGBoost had 53.524 MW and CatBoost had 52.748 MW, which is about 26% lower. |
 | F1-02 | The same run happens the same way on the same machine | Run `python src/train_xgboost.py` twice without making any changes to it. Compare the MAE, RMSE and MAPE in `results/xgboost_results.json` between the two runs. | All three of them are the same to three decimal places. You can ignore `TrainingSeconds` because it is expected to be different. |
-| F1-03 | Scores on a second machine | Elizabeth runs `python src/train_xgboost.py` on her machine and sends in the MAE. | The MAE is within 1 MW of 53.524. An exact match is **not** expected. One machine with the same code and seed gave 52.918 and another gave 53.524, because the XGBoost build is different. This is a known problem, which is why KPI 1 says the same environment instead of only the same CPU. It is expected that CatBoost will match perfectly. |
+| F1-03 | Scores on a second machine | Elizabeth runs `python src/train_xgboost.py` on her machine and sends in the MAE. | The MAE is within 0.1 MW of 53.524. An exact match is **not** expected. Before the requirements were pinned, two machines gave 53.524 and 52.918 on xgboost 2.1.4 against 3.2.0. With the versions pinned the gap narrowed to 0.059 MW (53.524 against 53.465) but did not close, because the machines still differ on Python version and operating system. This is why KPI 1 cannot claim exact reproduction across machines. CatBoost matches exactly. |
 | F1-04 | The run configuration is recorded | Open `results/xgboost_results.json` and `results/catboost_results.json` and look for `run_config`. | Each one shows `seed`, `test_year`, `forecast_horizon_hours`, `n_train_rows`, `n_test_rows`, `n_features`, and a `hyperparameters` block with a list of all the values that were given to the model. |
 | F1-05 | The forecast is really for the next day | Open `src/features.py`. Make sure to look at `HORIZON` and the `lags` default in `make_features`. Then run `python -c "import sys; sys.path.insert(0,'src'); from features import make_features, load_data; make_features(load_data(), lags=(1, 24))"` | `HORIZON` is 24 and every lag is at least 24. The command throws a `ValueError` saying the lag is shorter than the horizon, so adding a feature that falls inside the forecast gap by accident is not possible. |
 | F1-06 | There is only one piece of code that scores each model | Look in `src/train_xgboost.py`, `src/train_catboost.py` and `src/train_sequence.py` for `def mae` or `def rmse`. | No training script sets its own metric functions. All three import from `src/metrics.py`. |
@@ -52,14 +52,14 @@ Files in `results/` are changed by training. If you don't want to keep the outpu
 
 ### F1 pass rule
 
-F1 passes when F1-01, F1-02 and F1-04 to F1-07 pass on my machine, and F1-03 falls within the 1 MW tolerance on Elizabeth's. Each failure is raised in Jira with both scores and the machine each one came from.
+F1 passes when F1-01, F1-02 and F1-04 to F1-07 pass on my machine, and F1-03 falls within the 0.1 MW tolerance on Elizabeth's. Each failure is raised in Jira with both scores and the machine each one came from.
 
 ### F1 results
 
 | Date | Tester | Machine | Cases run | Passed | Failed | Notes |
 |---|---|---|---|---|---|---|
 | 19/10/2026 | Jessica | MacBook, Python 3.9, local run | F1-01, F1-02, F1-04 to F1-07 | 6 | 0 | F1-01: baseline MAE 71.651, XGBoost 53.524, CatBoost 52.748, both 26% below the baseline. F1-02: two runs had the same MAE to 14 decimals, only difference was `TrainingSeconds` (1.29 then 1.44). F1-04: both results files show all seven `run_config` keys. F1-05: `make_features(lags=(1, 24))` raised `ValueError: Lags [1] are shorter than the 24h forecast horizon`. F1-06: no training script defines its own metrics, all three import from `metrics.py`. F1-07: predictions and results file agree to 3 dp for both models. |
-| | Elizabeth | | F1-03 | | | Outstanding. Needs `pip install -r requirements-training.txt` then `python src/train_xgboost.py`, and the MAE reported back. The two machines gave 53.524 and 52.918 before the pinned requirements, due to xgboost 2.1.4 against 3.2.0, so the tolerance can now be tightened. |
+| 20/10/2026 | Elizabeth | Windows laptop, Python 3.11, fresh clone and clean virtual environment | F1-03 | 1 | 0 | XGBoost MAE 53.465, RMSE 75.235, MAPE 4.628%, baseline 71.651 / 100.096 / 6.111. Run twice with identical results, so her machine is self-consistent. The gap to Jessica's 53.524 is 0.059 MW, inside the 0.1 MW tolerance. Both machines ran xgboost 2.1.4, so the remaining difference comes from Python 3.9 on macOS against 3.11 on Windows rather than the library version. Nothing from this run was pushed, so `results/` on main is still Jessica's. |
 
 ## F4 reviewer sessions (plain-English explanation)
 
