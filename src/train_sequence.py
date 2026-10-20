@@ -1,8 +1,8 @@
 """
 Train and evaluate the LSTM and GRU sequence models for energy load forecasting.
 
-
-This is the DL Leads' deliverable (FR1). The model architecture lives in one function
+Owner: Jessica
+ The model architecture lives in one function
 (build_model) so it can be tuned or replaced without touching the data handling or the
 scoring, both of which have to stay identical to the tree models for the comparison to
 be fair.
