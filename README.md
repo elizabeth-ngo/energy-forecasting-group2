@@ -58,6 +58,6 @@ The first should end with `No warnings: all files line up.` and the second with 
 ### If something looks wrong
 
 - `command not found` for `python` or `pip` (common on macOS): use `python3` and `python3 -m pip`.
-- `ModuleNotFoundError`: run the install command in step 2 again.
+- `ModuleNotFoundError` or `No module named ...`: run the install command in step 2 again.
 - A yellow warning at the top of the dashboard means a file in `results/` is missing or does not match the others. The message names the file.
 - After new files are pushed to `results/`, run `git pull` and refresh the browser page.
