@@ -255,10 +255,11 @@ Jessica is the owner for the XGBoost, CatBoost and explanation stages. Joud cove
 | F6-10 | The explanation stage starts from the saved model | After F6-06, run `python src/explain_forecast.py`. | It finishes without any errors and rewrites `results/shap_explanations.json` and `results/xgboost_drivers.png`. There is a record for every test hour, not just the three named examples. Check with `python -c "import json; print(len(json.load(open('results/shap_explanations.json'))['examples']))"`, which prints 4276, being three named examples plus 4,273 hours. |
 | F6-11 | The explanations match the predictions | Run `python src/dashboard_data.py`. | The last line says `No warnings: all files line up.` A mismatch means the explanations and predictions came from different training runs, so both scripts need running again in the right order. |
 | F6-12 | The dashboard uses the new output | Reload the dashboard after F6-06, F6-07 and F6-10. | The XGBoost and CatBoost numbers and the Run settings table match the new results files. The Why this forecast tab can explain any hour in the date range, not just three. No warning appears. |
+| F6-13 | The CatBoost driver chart starts from the saved model | After F6-07, run `python src/catboost_drivers.py`. | It finishes without any errors and rewrites `results/catboost_drivers.png`. It prints `CatBoost: average effect on the forecast (MW)` followed by 16 grouped drivers, the largest being demand at this hour last week (38.6 MW). It does not change `results/catboost_predictions.csv`, `results/catboost_results.json` or `results/shap_explanations.json`. Without `models/catboost.cbm` it stops with the message `No saved model` and tells you to run `python src/train_catboost.py` first. |
 
 #### Pass rule for the tree model stages
 
-F6-06 to F6-12 pass on a fresh copy with no changes made by hand to any file in between, and the dashboard reload in F6-12 shows no warning.
+F6-06 to F6-13 pass on a fresh copy with no changes made by hand to any file in between, and the dashboard reload in F6-12 shows no warning.
 
 #### Note on the order of the stages
 
