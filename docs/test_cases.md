@@ -187,6 +187,8 @@ Run on 11 Oct 2026 on my own Windows laptop, local run, with the current results
 
 F3 passes on both laptops. The slowest times recorded are Joud's: 2.04 s to load and 0.93 s to redraw.
 
+Re-run on 20 Oct 2026 after the page started opening on the full test period (1 Jan to 27 Jun 2020). The first start after the laptop had been idle took 12.96 s to load, and the five starts after it took 3.96, 2.20, 2.23, 2.61 and 1.24 s. Redraw, slowest of 3: LSTM 1.51 s, GRU 1.60 s, date range 1.36 s. All redraws are under 2 s, but about twice the 11 Oct times (0.43 to 0.83 s) because the chart now draws six months of hours by default.
+
 ## F5 Setup from a fresh clone (FR6), LSTM and GRU
 
 Owner: Joud. Observer: Elizabeth.
@@ -277,7 +279,7 @@ Fill in a row each time the cases are run. Leave the rows empty until then.
 | 11/10/2026 | Joud | MacBook Air, local run | F3-01 to F3-05 | Load 2.04 s, redraw 0.93 s (slowest of 3) | 5 | 0 | none |
 | 11/10/2026 | Joud | MacBook Air, fresh clone on Desktop | F5-01 to F5-03 | 8 commands, 3 errors (pip and python not found; python3 and pip3 needed on Mac). F5-03 passed. | 1 | 2 | KAN-19 |
 | 12/10/2026 | Joud | MacBook Air, fresh clone on Desktop (re-run after README update) | F5-01 to F5-03 | README followed exactly: 3 commands (clone, install, run), 0 errors. LSTM and GRU shown on Model comparison tab. | 3 | 0 | KAN-19 |
-| 20/10/2026 | Elizabeth | Windows laptop, local run | F3-01 to F3-05 | Load X s, redraw Y s (slowest of 3 runs) | 5 | 0 | none |
+| 20/10/2026 | Elizabeth | Windows laptop, local run, page opening on the full test period | F3-01 to F3-05 | Load: 12.96 s on the first start after the laptop had been idle, then 3.96, 2.20, 2.23, 2.61 and 1.24 s. Redraw, slowest of 3: LSTM 1.51 s, GRU 1.60 s, date range 1.36 s. | 5 | 0 | none |
 
 ## F2 Results
 
