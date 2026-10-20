@@ -266,13 +266,13 @@ Fill in a row each time the cases are run. Leave the rows empty until then.
 | 12/10/2026 | Joud | MacBook Air, fresh clone on Desktop (re-run after README update) | F5-01 to F5-03 | README followed exactly: 3 commands (clone, install, run), 0 errors. LSTM and GRU shown on Model comparison tab. | 3 | 0 | KAN-19 |
 
 
-## Results
+## F2 Results
 
 Fill in a row each time the cases are run. Leave the row empty until then.
 
 | Date | Tester | Machine | Cases run | Passed | Failed | Jira ticket for each failure |
 |---|---|---|---|---|---|---|
-| 6/10/2026 | Elizabeth | Windows laptop, local run | F2-01 to F2-06 | 5 | 1 | F2-05: scores were shown to 1 decimal, so the gap to the results file could reach 0.05 MW. Fixed by showing 2 decimals. Ticket to be added. |
+| 6/10/2026 | Elizabeth | Windows laptop, local run | F2-01 to F2-06 | 5 | 1 | F2-05: scores were shown to 1 decimal, so the gap to the results file could reach 0.05 MW. Fixed by showing 2 decimals. |
 | 6/10/2026 | Elizabeth | Windows laptop, local run | F2-02 and F2-05, re-run after the fix | 2 | 0 | none |
 | 11/10/2026 | Jessica | MacBook, local run | F2-02 | 1 | 0 | none |
 | 11/10/2026 | Elizabeth | Windows laptop, local run | F2-01 and F2-02, re-run after Jessica's update to results/ | 2 | 0 | none |
