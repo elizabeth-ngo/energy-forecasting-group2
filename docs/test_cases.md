@@ -54,6 +54,13 @@ Files in `results/` are changed by training. If you don't want to keep the outpu
 
 F1 passes when F1-01, F1-02 and F1-04 to F1-07 pass on my machine, and F1-03 falls within the 1 MW tolerance on Elizabeth's. Each failure is raised in Jira with both scores and the machine each one came from.
 
+### F1 results
+
+| Date | Tester | Machine | Cases run | Passed | Failed | Notes |
+|---|---|---|---|---|---|---|
+| 19/10/2026 | Jessica | MacBook, Python 3.9, local run | F1-01, F1-02, F1-04 to F1-07 | 6 | 0 | F1-01: baseline MAE 71.651, XGBoost 53.524, CatBoost 52.748, both 26% below the baseline. F1-02: two runs had the same MAE to 14 decimals, only difference was `TrainingSeconds` (1.29 then 1.44). F1-04: both results files show all seven `run_config` keys. F1-05: `make_features(lags=(1, 24))` raised `ValueError: Lags [1] are shorter than the 24h forecast horizon`. F1-06: no training script defines its own metrics, all three import from `metrics.py`. F1-07: predictions and results file agree to 3 dp for both models. |
+| | Elizabeth | | F1-03 | | | Outstanding. Needs `pip install -r requirements-training.txt` then `python src/train_xgboost.py`, and the MAE reported back. The two machines gave 53.524 and 52.918 before the pinned requirements, due to xgboost 2.1.4 against 3.2.0, so the tolerance can now be tightened. |
+
 ## F4 reviewer sessions (plain-English explanation)
 
 Owner: Alisha. Target: 4 of 5 reviewers can state the forecast and its main driver without help.
@@ -243,7 +250,7 @@ Jessica is the owner for the XGBoost, CatBoost and explanation stages. Joud cove
 | F6-07 | The CatBoost stage runs the same way | Run `python src/train_catboost.py`. | It finishes without any errors and writes `results/catboost_predictions.csv`, `results/catboost_results.json` and `models/catboost.cbm`. |
 | F6-08 | Both tree models record seed, split and hyperparameters | Open both results files and look under `run_config`. | Each one shows `seed`, `test_year`, `forecast_horizon_hours`, `n_train_rows`, `n_test_rows`, `n_features` and a `hyperparameters` block. Put together with F6-03, this makes 4 of 4 models. |
 | F6-09 | The predictions line up with the other models | Compare `results/xgboost_predictions.csv` and `results/catboost_predictions.csv` with the LSTM and GRU files. | Same columns (`datetime`, `actual_demand`, `predicted_demand`, `model_name`), 4,273 rows and the same hours in all four. |
-| F6-10 | The explanation stage starts from the saved model | After F6-06, run `python src/explain_forecast.py`. | It finishes without any errors and rewrites `results/shap_explanations.json` and `results/shap_drivers.png`. There is a record for every test hour, not just the three named examples. Check with `python -c "import json; print(len(json.load(open('results/shap_explanations.json'))['examples']))"`, which prints 4276, being three named examples plus 4,273 hours. |
+| F6-10 | The explanation stage starts from the saved model | After F6-06, run `python src/explain_forecast.py`. | It finishes without any errors and rewrites `results/shap_explanations.json` and `results/xgboost_drivers.png`. There is a record for every test hour, not just the three named examples. Check with `python -c "import json; print(len(json.load(open('results/shap_explanations.json'))['examples']))"`, which prints 4276, being three named examples plus 4,273 hours. |
 | F6-11 | The explanations match the predictions | Run `python src/dashboard_data.py`. | The last line says `No warnings: all files line up.` A mismatch means the explanations and predictions came from different training runs, so both scripts need running again in the right order. |
 | F6-12 | The dashboard uses the new output | Reload the dashboard after F6-06, F6-07 and F6-10. | The XGBoost and CatBoost numbers and the Run settings table match the new results files. The Why this forecast tab can explain any hour in the date range, not just three. No warning appears. |
 
@@ -254,6 +261,12 @@ F6-06 to F6-12 pass on a fresh copy with no changes made by hand to any file in 
 #### Note on the order of the stages
 
 `explain_forecast.py` reads the saved model in `models/`, which git ignores, so it is never in a new copy. It has to run after `train_xgboost.py`, and they both need to come from the same training run. Running the explanation stage against an older model gives explanations whose forecast values don't match `xgboost_predictions.csv`, which is what F6-11 is there to catch.
+
+#### Results for the tree model stages
+
+| Date | Tester | Machine | Cases run | Passed | Failed | Notes |
+|---|---|---|---|---|---|---|
+| 19/10/2026 | Jessica | MacBook, Python 3.9, local run | F6-06 to F6-12 | 7 | 0 | F6-06 and F6-07 both trained with no errors and wrote their predictions, results and model files. F6-08: both `run_config` blocks hold all seven keys, which with F6-03 makes 4 of 4 models. F6-09: all four prediction files have the same columns, 4,273 rows and identical hours. F6-10: `explain_forecast.py` wrote 4,276 entries, three named examples plus every test hour. F6-11: `dashboard_data.py` said `No warnings: all files line up.` F6-12: dashboard reloaded clean and the Why this forecast tab resolved hours outside the three named examples. |
 
 ### Results for F3, F5 and F6
 

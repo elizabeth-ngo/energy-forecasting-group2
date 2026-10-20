@@ -2,7 +2,7 @@
 Print the top SHAP drivers for CatBoost.
 
 It only works if you have already trained the CatBoost model, because it needs the saved model file to load.
-It oly writes its own chart file, not the predictions or the scores, because those are already written by the training script.
+It only writes its own chart file, not the predictions or the scores, because those are already written by the training script.
 Run the training script first :
     python src/train_catboost.py
     python src/catboost_drivers.py
