@@ -264,7 +264,7 @@ Fill in a row each time the cases are run. Leave the rows empty until then.
 | 11/10/2026 | Joud | MacBook Air, local run | F3-01 to F3-05 | Load 2.04 s, redraw 0.93 s (slowest of 3) | 5 | 0 | none |
 | 11/10/2026 | Joud | MacBook Air, fresh clone on Desktop | F5-01 to F5-03 | 8 commands, 3 errors (pip and python not found; python3 and pip3 needed on Mac). F5-03 passed. | 1 | 2 | KAN-19 |
 | 12/10/2026 | Joud | MacBook Air, fresh clone on Desktop (re-run after README update) | F5-01 to F5-03 | README followed exactly: 3 commands (clone, install, run), 0 errors. LSTM and GRU shown on Model comparison tab. | 3 | 0 | KAN-19 |
-
+| 20/10/2026 | Elizabeth | Windows laptop, local run | F3-01 to F3-05 | Load X s, redraw Y s (slowest of 3 runs) | 5 | 0 | none |
 
 ## F2 Results
 
