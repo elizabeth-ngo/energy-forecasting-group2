@@ -15,7 +15,7 @@ Owner: Alisha. Open the dashboard as described in the README, look at the place 
 | FR3 | Seed, data split and hyperparameters shown for every model run | Dashboard, About the models tab |Met| Each model displays seed, data & hyperparameters| Alisha 10/10/26|
 | FR4 | The main factors behind a forecast written in plain English | Dashboard, Why this forecast tab |Met | Features the reviewer sessions with 5 reviewers| Alisha 11/10/26|
 | FR5 | Day-ahead forecast against recent actual demand, with an error band | Dashboard, Forecast vs actual tab (pick one model in the sidebar) | Met |chosen model in sidebar displays forecast vs actual demand | Alisha 11/10/26|
-| FR6 | Results load without the user running code or installing software | README steps, and the facilitator's answer on local run or hosted |Not met | Requires local installation (tracked via KAN-19)  |Alisha 11/10/26|
+| FR6 | Results load without the user running code or installing software | README steps|Not met | Requires local installation (tracked via KAN-19)  |Alisha 11/10/26|
 
 ## F1 Accuracy and repeatability of the tree model (FR1, FR3)
 
@@ -64,8 +64,11 @@ F1 passes when F1-01, F1-02 and F1-04 to F1-07 pass on my machine, and F1-03 fal
 ## F4 reviewer sessions (plain-English explanation)
 
 Owner: Alisha. Target: 4 of 5 reviewers can state the forecast and its main driver without help.
+
 ### F4 pass rule
-5 out of 5 reviewers could state the main driver and met the target number 4 out 5.
+
+5 out of 5 reviewers could state the main driver and met the target number 4 out of 5.
+
 | Reviewer | Date | Could state the forecast? | Could name the main driver? | Where they hesitated |
 |---|---|---|---|---|
 | 1 |10/10/26 |Yes|Yes| Brief pause on reading SHAP importance scale|
