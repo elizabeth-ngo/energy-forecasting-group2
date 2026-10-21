@@ -35,6 +35,8 @@ energy-forecasting-group2/
 │   └── data_dictionary.md
 ```
 
+Note: the two raw files in `data/primary-dataset/` are not included in this repository. To rerun the cleaning step, place them in that folder. The cleaned output is already provided in `data/processed/`, which is all the models, the dashboard and the tests need.
+
 ## 3. How to run
 
 From the repo root, in the VS Code terminal (PowerShell):
