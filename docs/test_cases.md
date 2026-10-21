@@ -203,7 +203,7 @@ Owner: Joud. Observer: Elizabeth.
 
 **Testing type:** system testing.
 
-**Open point:** FR6 says no installation. Alisha is asking the facilitator whether a local run is accepted or the dashboard must be hosted. If hosting is required, F5-01 and F5-02 change to open the hosted link.
+**Note:** FR6 asks for no installation, but the dashboard runs locally, so FR6 is recorded as Not met in the requirements check. F5 tests the local setup from the README.
 
 ### Before you start
 
@@ -276,9 +276,8 @@ F6-06 to F6-13 pass on a fresh copy with no changes made by hand to any file in 
 | 19/10/2026 | Jessica | MacBook, Python 3.9, local run | F6-06 to F6-12 | 7 | 0 | F6-06 and F6-07 both trained with no errors and wrote their predictions, results and model files. F6-08: both `run_config` blocks hold all seven keys, which with F6-03 makes 4 of 4 models. F6-09: all four prediction files have the same columns, 4,273 rows and identical hours. F6-10: `explain_forecast.py` wrote 4,276 entries, three named examples plus every test hour. F6-11: `dashboard_data.py` said `No warnings: all files line up.` F6-12: dashboard reloaded clean and the Why this forecast tab resolved hours outside the three named examples. |
 | 20/10/2026 | Elizabeth | Windows laptop, Python 3.11, local run after git pull | F6-11 and F6-12 | 2 | 0 | F6-11: `dashboard_data.py` said `No warnings: all files line up.` and the 35 checks gave `35 checks: 35 passed, 0 failed`. F6-12: the dashboard opened with no warning, the Model comparison scores matched the results files (XGBoost 53.52, CatBoost 52.75, LSTM 117.09, GRU 120.12), the Run settings table showed all four models, and Look up any hour explained an hour outside the three named examples. |
 | 20/10/2026 | Jessica | MacBook, Python 3.9, local run | F6-13 | 1 | 0 | `catboost_drivers.py` ran with no errors and rewrote `results/catboost_drivers.png`. It printed `CatBoost: average effect on the forecast (MW)` followed by 16 grouped drivers, largest demand at this hour last week at 38.6 MW. Checked by MD5 before and after that it left `catboost_predictions.csv`, `catboost_results.json` and `shap_explanations.json` unchanged. With `models/catboost.cbm` moved aside it stopped with `No saved model at .../models/catboost.cbm. Run python src/train_catboost.py first.` and wrote nothing. |
-### Results for F3, F5 and F6
 
-Fill in a row each time the cases are run. Leave the rows empty until then.
+### Results for F3, F5 and F6
 
 | Date | Tester | Machine | Cases run | Slowest time or result | Passed | Failed | Jira ticket for each failure |
 |---|---|---|---|---|---|---|---|
@@ -290,8 +289,6 @@ Fill in a row each time the cases are run. Leave the rows empty until then.
 | 20/10/2026 | Elizabeth | Windows laptop, local run | F5-04 | Line 1 (`command not found` on macOS): not testable on Windows, matches Joud's run on 11/10 where python and pip were not found on the Mac. Line 2 (`ModuleNotFoundError`): in an empty Python environment `dashboard_data.py` printed `ModuleNotFoundError: No module named 'numpy'`, while `python -m streamlit run` printed `No module named streamlit`; running the install command again fixed it. README line reworded to cover both messages. Line 3 (yellow warning): with `gru_predictions.csv` renamed the page showed `GRU is not shown: gru_predictions.csv not found.` and GRU left the table. Line 4 (`git pull`): confirmed on 11/10, when Jessica's updated results appeared after `git pull` and a page refresh. | 1 | 0 | none |
 
 ## F2 Results
-
-Fill in a row each time the cases are run. Leave the row empty until then.
 
 | Date | Tester | Machine | Cases run | Passed | Failed | Jira ticket for each failure |
 |---|---|---|---|---|---|---|

@@ -40,7 +40,7 @@ energy-forecasting-group2/
 From the repo root, in the VS Code terminal (PowerShell):
 
 ```powershell
-cd C:\Users\Admin\energy-forecasting-group2
+cd energy-forecasting-group2
 python src/01_data_cleaning.py
 ```
 
